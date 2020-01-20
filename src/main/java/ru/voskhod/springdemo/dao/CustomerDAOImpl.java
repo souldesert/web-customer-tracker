@@ -36,8 +36,4 @@ public class CustomerDAOImpl implements CustomerDAO {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-//    public EntityManagerFactory getEntityManagerFactory() {
-//        return entityManagerFactory;
-//    }
-
 }
