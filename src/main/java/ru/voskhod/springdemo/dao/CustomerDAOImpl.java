@@ -7,7 +7,6 @@ import ru.voskhod.springdemo.entity.Customer;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -16,7 +15,6 @@ public class CustomerDAOImpl implements CustomerDAO {
     private EntityManagerFactory entityManagerFactory;
 
     @Override
-    @Transactional
     public List<Customer> getCustomers() {
 
         // get entity manager

@@ -1,0 +1,29 @@
+package ru.voskhod.springdemo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ru.voskhod.springdemo.dao.CustomerDAO;
+import ru.voskhod.springdemo.entity.Customer;
+
+import javax.transaction.Transactional;
+import java.util.List;
+
+
+@Service
+public class CustomerServiceImpl implements CustomerService {
+
+    private CustomerDAO customerDAO;
+
+    // inject Customer DAO
+
+    @Autowired
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
+    }
+
+    @Override
+    @Transactional
+    public List<Customer> getCustomers() {
+        return customerDAO.getCustomers();
+    }
+}
