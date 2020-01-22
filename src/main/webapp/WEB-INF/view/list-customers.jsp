@@ -1,3 +1,4 @@
+<%--suppress ALL --%>
 <%--
   Created by IntelliJ IDEA.
   User: alex
@@ -7,6 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 
     <head>
@@ -32,6 +34,12 @@
                    onclick="window.location.href='showFormForAdd'; return false;"
                    class="add-button"
             />
+
+            <!-- add a search box -->
+            <form:form action="search" method="get">
+                Search customer: <input type="text" name="searchName">
+                <input type="submit" value="Search" class="add-button">
+            </form:form>
 
             <%-- add our html table --%>
             <table>

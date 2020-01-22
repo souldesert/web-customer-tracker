@@ -1,7 +1,5 @@
 package ru.voskhod.springdemo.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.voskhod.springdemo.entity.Customer;
@@ -56,6 +54,20 @@ public class CustomerDAOImpl implements CustomerDAO {
                 .createQuery("DELETE FROM Customer where id=:customerId")
                 .setParameter("customerId", id)
                 .executeUpdate();
+    }
+
+    @Override
+    public List<Customer> findCustomersByName(String searchName) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.joinTransaction();
+
+        return entityManager
+                .createQuery(
+                        "SELECT c FROM Customer c " +
+                                "WHERE c.firstName LIKE CONCAT('%', :searchName, '%') " +
+                                "OR c.lastName LIKE CONCAT('%', :searchName, '%')",
+                        Customer.class).setParameter("searchName", searchName)
+                .getResultList();
     }
 
 }
