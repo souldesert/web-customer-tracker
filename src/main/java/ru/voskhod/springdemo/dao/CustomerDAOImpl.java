@@ -6,36 +6,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.voskhod.springdemo.entity.Customer;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 @Repository
 public class CustomerDAOImpl implements CustomerDAO {
 
-    private SessionFactory sessionFactory;
+    private EntityManagerFactory entityManagerFactory;
 
     @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
     public List<Customer> getCustomers() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("SELECT c FROM Customer c ORDER BY lastName", Customer.class).getResultList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.joinTransaction();
+        return entityManager.createQuery("SELECT c FROM Customer c ORDER BY lastName", Customer.class).getResultList();
     }
 
     @Override
     public void saveCustomer(Customer customer) {
-        Session session = sessionFactory.getCurrentSession();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        // todo выяснить почему автоматически не подхватывается транзакция
+        // (а если сделать unwrap и получить Session все работает ок)
+        entityManager.joinTransaction();
 
         // save or update the customer
-        session.saveOrUpdate(customer);
+        entityManager.merge(customer);
+
     }
 
     @Override
     public Customer getCustomer(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Customer.class, id);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.joinTransaction();
+        return entityManager.find(Customer.class, id);
     }
 
 }

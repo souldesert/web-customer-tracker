@@ -30,10 +30,11 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>5.2.2.RELEASE</version>
+      <version>5.2.3.RELEASE</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
