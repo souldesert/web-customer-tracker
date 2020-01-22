@@ -47,4 +47,15 @@ public class CustomerDAOImpl implements CustomerDAO {
         return entityManager.find(Customer.class, id);
     }
 
+    @Override
+    public void deleteCustomer(int id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.joinTransaction();
+
+        entityManager
+                .createQuery("DELETE FROM Customer where id=:customerId")
+                .setParameter("customerId", id)
+                .executeUpdate();
+    }
+
 }
