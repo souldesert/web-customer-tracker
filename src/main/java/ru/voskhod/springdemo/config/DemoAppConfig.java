@@ -2,12 +2,9 @@ package ru.voskhod.springdemo.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -28,6 +25,7 @@ import java.util.logging.Logger;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
+@EnableAspectJAutoProxy
 @ComponentScan("ru.voskhod.springdemo")
 @PropertySource({ "classpath:persistence-mysql.properties" })
 public class DemoAppConfig implements WebMvcConfigurer {
@@ -100,10 +98,11 @@ public class DemoAppConfig implements WebMvcConfigurer {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         // create EntityManagerFactory
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactory.setPersistenceProvider(new HibernatePersistenceProvider());
         entityManagerFactory.setDataSource(myDataSource());
         entityManagerFactory.setPackagesToScan(env.getProperty("hibernate.packagesToScan"));
         entityManagerFactory.setJpaProperties(getHibernateProperties());
-        entityManagerFactory.setPersistenceProvider(new HibernatePersistenceProvider());
+
 
         return entityManagerFactory;
     }
